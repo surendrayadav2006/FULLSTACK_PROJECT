@@ -13,7 +13,8 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (isAuthenticated && token) {
-      socketRef.current = io('http://localhost:5000', { auth: { token } });
+      const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
+      socketRef.current = io(socketUrl, { auth: { token } });
       socketRef.current.on('onlineUsers', (users) => setOnlineUsers(users));
       socketRef.current.on('connect_error', (err) => console.error('Socket error:', err.message));
     }
